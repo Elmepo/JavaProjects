@@ -112,12 +112,12 @@ public class Polynomial
 			long[] g = polynomial.poly.get(i);
 			//System.out.println("XXXXX: " + g[0] + "XXXXX" + g[1]);
 			total = (long) Math.pow(givenValue, g[1]);
-			System.out.println(total);
+			//System.out.println(total);
 			total = total * g[0];
-			System.out.println("TEMPTOTAL: " + total);
+			//System.out.println("TEMPTOTAL: " + total);
 			runningtotal += total;
 		}
-		System.out.println("RUNNING TOTAL: " + runningtotal);
+		//System.out.println("RUNNING TOTAL: " + runningtotal);
 		return 0;
 	}
 	
@@ -135,7 +135,7 @@ public class Polynomial
 		{							//Always an element at 0, albeit one that's never accessed.
 			long[] temp = this.poly.get(i);
 			ll1.add(temp);
-			System.out.println(temp[0]);
+			//System.out.println(temp[0]);
 		}
 		LinkedList<long[]> ll2 = new LinkedList<long[]>();
 		ll2.add(cheatsArray);
@@ -143,7 +143,7 @@ public class Polynomial
 		{
 			long[] temp = polynomial.poly.get(i);
 			ll2.add(temp);
-			System.out.println(temp[0]);
+			//System.out.println(temp[0]);
 		}
 		//cheatsArray = ll2.get(1);
 		//System.out.println(cheatsArray[0] + ":::::" + cheatsArray[1]);
@@ -152,18 +152,18 @@ public class Polynomial
 		{
 			long[] first = ll1.get(1);
 			long[] second = ll2.get(1);
-			System.out.println(first[0]);
-			System.out.println(second[0]);
+			//System.out.println(first[0]);
+			//System.out.println(second[0]);
 			if (first[1] > second[1])
 			{
 				resultPoly.InsertTerm(first);
-				System.out.println("First EXP Bigger: " + first[1] + " VS " + second[1]);
+				//System.out.println("First EXP Bigger: " + first[1] + " VS " + second[1]);
 				ll1.remove();
 			}
 			else if (second[1] > first[1])
 			{
 				resultPoly.InsertTerm(second);
-				System.out.println("Second EXP Bigger: " + first[1] + " VS " + second[1]);
+				//System.out.println("Second EXP Bigger: " + first[1] + " VS " + second[1]);
 				ll2.remove();
 			} else {
 				if (first[1] == second[1])
@@ -176,7 +176,7 @@ public class Polynomial
 						newMonomial[0] = first[0] + second[0];
 						newMonomial[1] = first[1];
 						resultPoly.InsertTerm(newMonomial);
-						System.out.println("EXP's were Equal: " + first[0] + " VS " + second[0]);
+						//System.out.println("EXP's were Equal: " + first[0] + " VS " + second[0]);
 						ll2.remove();
 						ll1.remove();
 					}
@@ -223,6 +223,54 @@ public class Polynomial
 		return derivedPoly;
 	}
 	
+	public Polynomial multiply(Polynomial polynomial)
+	{
+		Polynomial newPolynomial = new Polynomial();
+		int len1 = this.poly.size();
+		int len2 = polynomial.poly.size();
+		//long[] firstPoly = new long[2];
+		//long[] secondPoly = new long[2];
+		//long[] multiPoly = new long[2];
+		for (int i = 0; i < len1; i++)
+		{
+			long[] firstPoly = this.poly.get(i);
+			Polynomial tempPolynomial = new Polynomial();
+			for (int j = 0; j < len2; j++)
+			{
+				long[] secondPoly = polynomial.poly.get(j);
+				long[] multiPoly = new long[2];
+				multiPoly[0] = firstPoly[0] * secondPoly[0];
+				multiPoly[1] = firstPoly[1] + secondPoly[1];
+				tempPolynomial.InsertTerm(multiPoly);
+				//for (int k = 0; k < tempPolynomial.poly.size(); k++)
+				//{
+				//	long[] arr = tempPolynomial.poly.get(k);
+				//	System.out.println("tempPolynomial is: " + arr[0] + " AND " + arr[1]);
+				//}
+			}
+			newPolynomial = tempPolynomial.add(newPolynomial);
+		}
+		for (int t = 0; t < newPolynomial.poly.size(); t++)
+		{
+			long[] temp = newPolynomial.poly.get(t);
+			//System.out.println(newPolynomial.poly.size());
+			System.out.println(temp[0] + " AND " + temp[1]);
+		}
+		/*long[] t1 = newPolynomial.poly.get(0);
+		long[] t2 = newPolynomial.poly.get(1);
+		long[] t3 = newPolynomial.poly.get(2);
+		long[] t4 = newPolynomial.poly.get(3);
+		long[] t5 = newPolynomial.poly.get(4);
+		long[] t6 = newPolynomial.poly.get(5);
+		System.out.println("T1: " + t1[0] + " AND " + t1[1]);
+		System.out.println("T2: " + t2[0] + " AND " + t2[1]);
+		System.out.println("T3: " + t3[0] + " AND " + t3[1]);
+		System.out.println("T4: " + t4[0] + " AND " + t4[1]);
+		System.out.println("T5: " + t5[0] + " AND " + t5[1]);
+		System.out.println("T6: " + t6[0] + " AND " + t6[1]);*/
+		return newPolynomial;
+	}
+	
 	//STRICTLY FOR TESTING PURPOSES
 	public static void main(String[] args) throws IOException
 	{
@@ -241,7 +289,7 @@ public class Polynomial
 		test2.InsertTerm(d);
 		test2.InsertTerm(e);
 		test2.InsertTerm(f);
-		int len = test1.poly.size();
+		/*int len = test1.poly.size();
 		for (int i = 0; i < len; i++)
 		{
 			long[] temp = test1.poly.get(i);
@@ -259,6 +307,12 @@ public class Polynomial
 		{
 			long[] temp = test1.poly.get(i);
 			System.out.println("DIFFERENTIATED POLY: " + temp[0] + " AND " + temp[1]);
-		}
+		}*/
+		Polynomial test3 = test1.multiply(test2);
+		//for (int i = 0; i < test3.poly.size(); i++)
+		//{
+			//long[] temp = test3.poly.get(i);
+			//System.out.println("Multiplied poly is: " + temp[0] + " AND " + temp[1]);
+		//}
 	}
 }
