@@ -1,37 +1,22 @@
-import java.io.Console;
 import java.io.File;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import javax.swing.*;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.math.*;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+
+/**
+ * Polynomial Program
+ * 
+ * This program is designed to provide a basic framework for a polynomial in code,
+ * although it isn't designed to provide anything other than basic mathematical functions and
+ * the loading of these polynomials.
+ * 
+ * @author Scott Gardner
+ */
 
 public class Polynomial
 {
-	//Two Constructors for Polynomial, One for file and one for user input
-	//Polynomial.add(), to add two polynomials
-	//	Follows 4 rules:
-	//		1. Powers are equal, they're added algebraically
-	//		2. Powers are unqual, the term with the higher power is inserted in the new polynomial
-	//		3. If the exponent is 0, it represents 1, the value of the term is therefore the value of
-	//			the coefficient
-	//		4. If the result of adding the coefficients results in 0, the term is dropped.
-	//Get the value of a polynomial given an input (e.g. x=2)
-	//Implement the product of a polynomial by another polynomial, which is the algebraic sum of the
-	//	products of one polynomial by all the monomials of another polynomial
-	//Implement the derivative operation for a polynomial. E.g. ax^k derived is kax^k-1,
-	//	and the derivative of a constant is 0, and the derivative of a polynomial is equal to the sum
-	//	of the derivatives of it's polynomial
-	//Implement an InsertTerm(), this method should put the input term into a polynomial
-	//Test with data provided in assignment text to test all the functionalities that you have defined.
-	//Write a driver program
 	
 	public String everything = null;
 	public LinkedList<long[]> poly = new LinkedList<long[]>();
@@ -41,58 +26,50 @@ public class Polynomial
 	{
 	}
 	
-	//IMPLEMENT LATER
-	//FUCK THIS SHIT
-	/*public Polynomial(File pFile) throws IOException
+	public Polynomial readFile(File pFile)
 	{
-		//Reads the file into a <String>List, then makes this.everything an exact copy.
-		List<String> lines = Files.readAllLines(Paths.get(pFile.getAbsolutePath()), Charset.forName("ISO-8859-1"));
-		this.everything = lines.toString();
-		//Searching for, any text in between [], then making "s" a copy of said text
-		Pattern sBPattern = Pattern.compile("\\[(.*?)\\]");
-		Matcher sBMatcher = sBPattern.matcher(this.everything);
-		String s = null;
-		while (sBMatcher.find()) {
-			s = sBMatcher.group(1);
-		}
-		System.out.println(s);
-		//Searching for any text within (), then making "s" an exact copy of said text
-		Pattern rBPattern = Pattern.compile("\\((.*?)\\)");
-		Matcher rBMatcher = rBPattern.matcher(s);
-		//Grabs the data from the pair of parentheses and adds it to a polynomial component array
-		//Then adds *that* polynomial component array to a linked list
-		while (rBMatcher.find()) {
-			s = rBMatcher.group(1);
-			System.out.println("G1 = " + rBMatcher.group(1));
-			String[] tempArr = s.split(",");
-			System.out.println("tempArr[0] " + tempArr[0]);
-			System.out.println("tempArr[1] " + tempArr[1]);
-			polyComps[0] = Integer.parseInt(tempArr[0]);
-			polyComps[1] = Integer.parseInt(tempArr[1]);
-			System.out.println("polyComps[0]: " + polyComps[0]);
-			this.poly.add(polyComps);
-		}
-		int len = this.poly.size();
-		for (int i = 0; i < len; i++)
+		Polynomial resultPoly = new Polynomial();
+		try {
+		BufferedReader reader = new BufferedReader(new FileReader(pFile));
+		String line = null;
+		while ((line = reader.readLine()) != null)
 		{
-			//System.out.println(i);
-			long[] temp = this.poly.get(i);
-			System.out.println("LINKED LISTA: " + temp[0] + " AND " + temp[1]);
+			String[] tempComps = line.split(",");
+			long[] polynomialComponents = new long[2];
+			polynomialComponents[0] = Long.parseLong(tempComps[0]);
+			polynomialComponents[1] = Long.parseLong(tempComps[1]);
+			resultPoly.InsertTerm(polynomialComponents);
 		}
-		long[] a = this.poly.get(0);
-		long[] b = this.poly.get(1);
-		long[] c = this.poly.get(2);
-		System.out.println(a[0] + " a " + a[1]);
-		System.out.println(b[0] + " b " + b[1]);
-		System.out.println(c[0] + " c " + c[1]);
-		//System.out.println(s);
-		this.everything = s;
-	}*/
+		reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return resultPoly;
+	}
 	
-	/*public Polynomial(ArrayList pList)
+	public Polynomial scannerRead()
 	{
-	//IMPLEMENT AT END. 
-	}*/
+		Polynomial resultPoly = new Polynomial();
+		Scanner scanIn = new Scanner(System.in);
+		System.out.println("Enter the size of the polynomial: ");
+		int polysize = Integer.parseInt(scanIn.nextLine());
+		for (int i = 0; i < polysize; i++)
+		{
+			System.out.println("Please enter a coefficient: ");
+			String[] holderArr = new String[2];
+			String tempString = scanIn.nextLine();
+			holderArr[0] = tempString;
+			System.out.println("Please enter a power: ");
+			tempString = scanIn.nextLine();
+			holderArr[1] = tempString;
+			long[] polyArr = new long[2];
+			polyArr[0] = Long.parseLong(holderArr[0]);
+			polyArr[1] = Long.parseLong(holderArr[1]);
+			resultPoly.InsertTerm(polyArr);
+		}
+		scanIn.close();
+		return resultPoly;
+	}
 	
 	public int InsertTerm(long[] terms)
 	{
@@ -110,15 +87,11 @@ public class Polynomial
 		{
 			temp[i] = polynomial.poly.get(i);
 			long[] g = polynomial.poly.get(i);
-			//System.out.println("XXXXX: " + g[0] + "XXXXX" + g[1]);
 			total = (long) Math.pow(givenValue, g[1]);
-			//System.out.println(total);
 			total = total * g[0];
-			//System.out.println("TEMPTOTAL: " + total);
 			runningtotal += total;
 		}
-		//System.out.println("RUNNING TOTAL: " + runningtotal);
-		return 0;
+		return runningtotal;
 	}
 	
 	public Polynomial add(Polynomial polynomial)
@@ -228,9 +201,6 @@ public class Polynomial
 		Polynomial newPolynomial = new Polynomial();
 		int len1 = this.poly.size();
 		int len2 = polynomial.poly.size();
-		//long[] firstPoly = new long[2];
-		//long[] secondPoly = new long[2];
-		//long[] multiPoly = new long[2];
 		for (int i = 0; i < len1; i++)
 		{
 			long[] firstPoly = this.poly.get(i);
@@ -242,18 +212,12 @@ public class Polynomial
 				multiPoly[0] = firstPoly[0] * secondPoly[0];
 				multiPoly[1] = firstPoly[1] + secondPoly[1];
 				tempPolynomial.InsertTerm(multiPoly);
-				//for (int k = 0; k < tempPolynomial.poly.size(); k++)
-				//{
-				//	long[] arr = tempPolynomial.poly.get(k);
-				//	System.out.println("tempPolynomial is: " + arr[0] + " AND " + arr[1]);
-				//}
 			}
 			newPolynomial = tempPolynomial.add(newPolynomial);
 		}
 		for (int t = 0; t < newPolynomial.poly.size(); t++)
 		{
 			long[] temp = newPolynomial.poly.get(t);
-			//System.out.println(newPolynomial.poly.size());
 			System.out.println(temp[0] + " AND " + temp[1]);
 		}
 		/*long[] t1 = newPolynomial.poly.get(0);
@@ -272,7 +236,7 @@ public class Polynomial
 	}
 	
 	//STRICTLY FOR TESTING PURPOSES
-	public static void main(String[] args) throws IOException
+	/*public static void main(String[] args) throws IOException
 	{
 		File tempFile = new File("src/PolynomialFile.txt");
 		Polynomial test1 = new Polynomial();
@@ -289,6 +253,15 @@ public class Polynomial
 		test2.InsertTerm(d);
 		test2.InsertTerm(e);
 		test2.InsertTerm(f);
+		Polynomial test3 = new Polynomial();
+		test3 = test3.scannerRead();
+		//test3 = test3.readFile(tempFile);
+		System.out.println(test3.poly.size());
+		for (int i = 0; i < test3.poly.size(); i++)
+		{
+			long[] temp = test3.poly.get(i);
+			System.out.println("Read Poly is: " + temp[0] + " AND " + temp[1]);
+		}
 		/*int len = test1.poly.size();
 		for (int i = 0; i < len; i++)
 		{
@@ -307,12 +280,7 @@ public class Polynomial
 		{
 			long[] temp = test1.poly.get(i);
 			System.out.println("DIFFERENTIATED POLY: " + temp[0] + " AND " + temp[1]);
-		}*/
-		Polynomial test3 = test1.multiply(test2);
-		//for (int i = 0; i < test3.poly.size(); i++)
-		//{
-			//long[] temp = test3.poly.get(i);
-			//System.out.println("Multiplied poly is: " + temp[0] + " AND " + temp[1]);
-		//}
-	}
+		}
+		//Polynomial test3 = test1.multiply(test2);
+	}*/
 }
