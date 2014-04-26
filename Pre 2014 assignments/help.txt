@@ -1,0 +1,4 @@
+Bin folder contains all the class files, which can be run via the java command in command prompt
+(Although let's face it, you  wouldn't be teaching Java 2 if you didn't know this)
+
+All the java sources are inside the src folder.
