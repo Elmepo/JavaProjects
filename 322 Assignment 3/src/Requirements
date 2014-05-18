@@ -1,0 +1,17 @@
+Needs for Assignment:
+
+Multi-Dim array for height and width. Int[][] multi = new int[5][10]
+Represent with + - and |
+Top left is start and bottom left is end
+EG:
+4 and 5
++-+-+-+-+-+
+|S| | | | |
++-+-+-+-+-+
+| | | | | |
++-+-+-+-+-+
+| | | | | |
++-+-+-+-+-+
+| | | | |E|
++-+-+-+-+-+
+
