@@ -76,6 +76,7 @@ public class Maze
 				   //TODO: Figure out how to work this for everyline, probably do it by implementing a counter,
 				   //to keep track of each position. i currently keeps track of position on line, not through graph
 				   //as a whole. Refer to notes.
+				   int b = 0;
 				   for (int i = 1; i < line.length(); i = i + 2)
 				   {
 					   //Matcher matcher = pattern.matcher(line.charAt(i));
@@ -85,7 +86,7 @@ public class Maze
 						   /* Takes the current cell position, counted by the for loop, and adds it to the
 						    * width incrementer to get the current position. Then creates an edge using the current
 						    * cell and the cell above it, using (currentCell - mazeWidth) */
-						   int currentCell = cellIncrementer + i;
+						   int currentCell = cellIncrementer + (i-b);
 						   //int currentCell = (int) graph.getLabel(i);
 						   int ceilingCell = currentCell - width;
 						   //int t1 = (int) graph.getLabel(currentCell);
@@ -93,8 +94,9 @@ public class Maze
 						   graph.addEdge(currentCell, ceilingCell);
 						   //Graph.depthFirstPrint(graph, 1);
 					   }
+					   b++;
 				   }
-				   cellIncrementer = cellIncrementer + width;
+				   //cellIncrementer = cellIncrementer + width;
 			   }
 			   else if (c == '|')
 			   {
@@ -110,7 +112,7 @@ public class Maze
 						   graph.addEdge(currentCell, nextCell);
 					   }
 				   }
-				   //cellIncrementer = cellIncrementer + width;
+				   cellIncrementer = cellIncrementer + width;
 			   }
 			   else if (c ==' ')
 			   {
