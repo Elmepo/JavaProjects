@@ -34,7 +34,7 @@ public class Maze
    **/
    public static void main(String[ ] args)
    {
-	  int[][] multi = ScanIn(new File("src/maze01TestFile.mz"));
+	  int[][] multi = ScanIn(new File("src/maze01.mz"));
 	  /*
       if (traverseMaze( ))
          System.out.println("The tapestry was found.");
@@ -53,6 +53,7 @@ public class Maze
 		   BufferedReader reader = new BufferedReader(new FileReader(mFile));
 		   String line = null;
 		   int cellIncrementer = 0;
+		   int lineCounter = 0;//h22+*
 		   while ((line = reader.readLine()) != null)
 		   {
 			   char c = line.charAt(0);
@@ -66,58 +67,73 @@ public class Maze
 				   graph.setEdges(height, width);
 				   graph.setVertexSize(height, width);
 				   graph.fill();
+				   lineCounter++;
 			   }
-			   if (c == '+')
+			   if (lineCounter < ((height * 2) + 1))
 			   {
-				   //Count the number of whitespaces or dashes
-				   // /s|-
-				   //Pattern pattern = Pattern.compile("\\s"); //regex for a whitespace character
-				   //Matcher matcher = pattern.matcher(line);
-				   //TODO: Figure out how to work this for everyline, probably do it by implementing a counter,
-				   //to keep track of each position. i currently keeps track of position on line, not through graph
-				   //as a whole. Refer to notes.
-				   int b = 0;
-				   for (int i = 1; i < line.length(); i = i + 2)
+				   if (c == '+')
 				   {
-					   //Matcher matcher = pattern.matcher(line.charAt(i));
-					   //if (matcher.find())
-					   if (line.charAt(i) == ' ')
+					   //Count the number of whitespaces or dashes
+					   // /s|-
+					   //Pattern pattern = Pattern.compile("\\s"); //regex for a whitespace character
+					   //Matcher matcher = pattern.matcher(line);
+					   //TODO: Figure out how to work this for everyline, probably do it by implementing a counter,
+					   //to keep track of each position. i currently keeps track of position on line, not through graph
+					   //as a whole. Refer to notes.
+					   int b = 0;
+					   for (int i = 1; i < line.length(); i = i + 2)
 					   {
-						   /* Takes the current cell position, counted by the for loop, and adds it to the
-						    * width incrementer to get the current position. Then creates an edge using the current
-						    * cell and the cell above it, using (currentCell - mazeWidth) */
-						   int currentCell = cellIncrementer + (i-b);
-						   //int currentCell = (int) graph.getLabel(i);
-						   int ceilingCell = currentCell - width;
-						   //int t1 = (int) graph.getLabel(currentCell);
-						   //int t2 = (int) graph.getLabel(ceilingCell);
-						   graph.addEdge(currentCell, ceilingCell);
-						   //Graph.depthFirstPrint(graph, 1);
+						   //Matcher matcher = pattern.matcher(line.charAt(i));
+						   //if (matcher.find())
+						   if (line.charAt(i) == ' ' || line.charAt(i) == '*')
+						   {
+							   /* Takes the current cell position, counted by the for loop, and adds it to the
+							    * width incrementer to get the current position. Then creates an edge using the current
+							    * cell and the cell above it, using (currentCell - mazeWidth) */
+							   int currentCell = cellIncrementer + (i-b);
+							   //int currentCell = (int) graph.getLabel(i);
+							   int ceilingCell = currentCell - width;
+							   //int t1 = (int) graph.getLabel(currentCell);
+							   //int t2 = (int) graph.getLabel(ceilingCell);
+							   graph.addEdge(currentCell, ceilingCell);
+							   //Graph.depthFirstPrint(graph, 1);
+						   }
+						   b++;
 					   }
-					   b++;
-				   }
-				   //cellIncrementer = cellIncrementer + width;
-			   }
-			   else if (c == '|')
-			   {
-				   //Pattern pattern = Pattern.compile("\\s");
-				   //Matcher matcher = pattern.matcher(line);
-				   for (int i = 2; i < line.length(); i = i + 2)
-				   {
-					   //while (matcher.find())
-					   if (line.charAt(i) == ' ')
+					   lineCounter++;
+					   //cellIncrementer = cellIncrementer + width;
+				   	}
+				   	else if (c == '|')
+				   	{
+					   for (int i = 2; i < (line.length() - 2); i = i + 2)
 					   {
-						   int currentCell = cellIncrementer + (i/2);
-						   int nextCell = currentCell + 1;
-						   graph.addEdge(currentCell, nextCell);
+						   //while (matcher.find())
+						   if (line.charAt(i) == ' ' || line.charAt(i) == '*')
+						   {
+							   int currentCell = cellIncrementer + (i/2);
+							   int nextCell = currentCell + 1;
+							   graph.addEdge(currentCell, nextCell);
+						   }
 					   }
-				   }
-				   cellIncrementer = cellIncrementer + width;
-			   }
-			   else if (c ==' ')
-			   {
-				   //cellIncrementer = cellIncrementer + width;
-			   }
+					   cellIncrementer = cellIncrementer + width;
+					   lineCounter++;
+				   	}
+				   	else if (c ==' ')
+				   	{
+					   for (int i = 2; i < (line.length() - 2); i = i + 2)
+					   {
+						   //while (matcher.find())
+						   if (line.charAt(i) == ' ' || line.charAt(i) == '*')
+						   {
+							   int currentCell = cellIncrementer + (i/2);
+							   int nextCell = currentCell + 1;
+							   graph.addEdge(currentCell, nextCell);
+						   }
+					   }
+					   cellIncrementer = cellIncrementer + width;
+					   lineCounter++;
+				   	}
+			   	}
 		   }
 		   reader.close();
 	   }
