@@ -6,9 +6,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /******************************************************************************
 * The <CODE>Maze</CODE> Java application illustrates the use of
@@ -32,17 +29,7 @@ public class Maze
    * indicating whether the tapestry was found. The <CODE>String</CODE> 
    * argument (<CODE>args</CODE>) is not used in this implementation.
    **/
-   public static void main(String[ ] args)
-   {
-	  int[][] multi = ScanIn(new File("src/maze01.mz"));
-	  /*
-      if (traverseMaze( ))
-         System.out.println("The tapestry was found.");
-      else
-         System.out.println("The tapestry was not found.");*/
-   }
    
-   //TODO Fix border issue. Currently this algorithm will only work with solid borders.
    public static int[][] ScanIn(File mFile)
    {
 	   Graph graph = new Graph();
@@ -53,7 +40,7 @@ public class Maze
 		   BufferedReader reader = new BufferedReader(new FileReader(mFile));
 		   String line = null;
 		   int cellIncrementer = 0;
-		   int lineCounter = 0;//h22+*
+		   int lineCounter = 0;
 		   while ((line = reader.readLine()) != null)
 		   {
 			   char c = line.charAt(0);
@@ -74,40 +61,23 @@ public class Maze
 				   if (c == '+')
 				   {
 					   //Count the number of whitespaces or dashes
-					   // /s|-
-					   //Pattern pattern = Pattern.compile("\\s"); //regex for a whitespace character
-					   //Matcher matcher = pattern.matcher(line);
-					   //TODO: Figure out how to work this for everyline, probably do it by implementing a counter,
-					   //to keep track of each position. i currently keeps track of position on line, not through graph
-					   //as a whole. Refer to notes.
 					   int b = 0;
 					   for (int i = 1; i < line.length(); i = i + 2)
 					   {
-						   //Matcher matcher = pattern.matcher(line.charAt(i));
-						   //if (matcher.find())
 						   if (line.charAt(i) == ' ' || line.charAt(i) == '*')
 						   {
-							   /* Takes the current cell position, counted by the for loop, and adds it to the
-							    * width incrementer to get the current position. Then creates an edge using the current
-							    * cell and the cell above it, using (currentCell - mazeWidth) */
 							   int currentCell = cellIncrementer + (i-b);
-							   //int currentCell = (int) graph.getLabel(i);
 							   int ceilingCell = currentCell - width;
-							   //int t1 = (int) graph.getLabel(currentCell);
-							   //int t2 = (int) graph.getLabel(ceilingCell);
 							   graph.addEdge(currentCell, ceilingCell);
-							   //Graph.depthFirstPrint(graph, 1);
 						   }
 						   b++;
 					   }
 					   lineCounter++;
-					   //cellIncrementer = cellIncrementer + width;
 				   	}
 				   	else if (c == '|')
 				   	{
 					   for (int i = 2; i < (line.length() - 2); i = i + 2)
 					   {
-						   //while (matcher.find())
 						   if (line.charAt(i) == ' ' || line.charAt(i) == '*')
 						   {
 							   int currentCell = cellIncrementer + (i/2);
@@ -122,7 +92,6 @@ public class Maze
 				   	{
 					   for (int i = 2; i < (line.length() - 2); i = i + 2)
 					   {
-						   //while (matcher.find())
 						   if (line.charAt(i) == ' ' || line.charAt(i) == '*')
 						   {
 							   int currentCell = cellIncrementer + (i/2);

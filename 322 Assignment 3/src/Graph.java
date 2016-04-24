@@ -22,8 +22,8 @@ public class Graph implements Cloneable
    //   2. For each vertex number i, labels[i] contains the label for vertex i.
    //   3. For any two vertices i and j, edges[i][j] is true if there is a
    //      vertex from i to j; otherwise edges[i][j] is false.  
-   private boolean[ ][ ] edges;
-   private Object[ ] labels;
+   protected boolean[ ][ ] edges;
+   protected Object[ ] labels;
    
 
    /**
@@ -54,7 +54,7 @@ public class Graph implements Cloneable
    
    public void setVertexSize(int height, int width)
    {
-	   this.labels = new Object[height*width];
+	   this.labels = new Object[(height*width)+1];
    }
    
    public int getWidth()
@@ -103,6 +103,7 @@ public class Graph implements Cloneable
    public void addEdge(int source, int target)   
    {
       edges[source][target] = true;
+      edges[target][source] = true;
    }
    
    /**
